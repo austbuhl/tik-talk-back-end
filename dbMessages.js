@@ -7,4 +7,5 @@ const tikTalkSchema = mongoose.Schema({
   sent: Boolean
 })
 
-export default mongoose.model('messageContent', tikTalkSchema)
+//collection
+export default mongoose.model('messages', tikTalkSchema)
