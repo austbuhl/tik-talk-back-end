@@ -92,6 +92,17 @@ app.get('/api/v1/rooms', (req, res) => {
   })
 })
 
+app.get('/api/v1/rooms/:roomId/messages', (req, res) => {
+  const roomId = req.params.roomId
+  Messages.find({ roomId: roomId }, (err, data) => {
+    if (err) {
+      res.status(500).send(err)
+    } else {
+      res.status(200).send(data)
+    }
+  })
+})
+
 app.post('/api/v1/rooms', (req, res) => {
   const room = req.body
   Rooms.create(room, (err, data) => {

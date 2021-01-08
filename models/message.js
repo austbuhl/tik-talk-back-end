@@ -5,9 +5,10 @@ const messageSchema = mongoose.Schema({
   name: String,
   timestamp: String,
   sent: Boolean,
-  room: {
-    roomId: { type: mongoose.Schema.Types.ObjectId, required: true },
-    name: String
+  roomId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Room',
+    required: true
   }
 })
 
