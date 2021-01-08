@@ -1,8 +1,8 @@
 // imports
 import express from 'express'
 import mongoose from 'mongoose'
-import Messages from './models/message.js'
-import Rooms from './models/room.js'
+import messagesRoutes from './routes/messages.js'
+import roomsRoutes from './routes/rooms.js'
 import Pusher from 'pusher'
 import cors from 'cors'
 
@@ -61,58 +61,8 @@ db.once('open', () => {
 // api routes
 app.get('/', (req, res) => res.status(200).send('hello world'))
 
-app.get('/api/v1/messages', (req, res) => {
-  Messages.find((err, data) => {
-    if (err) {
-      res.status(500).send(err)
-    } else {
-      res.status(200).send(data)
-    }
-  })
-})
-
-app.post('/api/v1/messages/', (req, res) => {
-  const message = req.body
-  Messages.create(message, (err, data) => {
-    if (err) {
-      res.status(500).send(err)
-    } else {
-      res.status(201).send(data)
-    }
-  })
-})
-
-app.get('/api/v1/rooms', (req, res) => {
-  Rooms.find((err, data) => {
-    if (err) {
-      res.status(500).send(err)
-    } else {
-      res.status(200).send(data)
-    }
-  })
-})
-
-app.get('/api/v1/rooms/:roomId/messages', (req, res) => {
-  const roomId = req.params.roomId
-  Messages.find({ roomId: roomId }, (err, data) => {
-    if (err) {
-      res.status(500).send(err)
-    } else {
-      res.status(200).send(data)
-    }
-  })
-})
-
-app.post('/api/v1/rooms', (req, res) => {
-  const room = req.body
-  Rooms.create(room, (err, data) => {
-    if (err) {
-      res.status(500).send(err)
-    } else {
-      res.status(200).send(data)
-    }
-  })
-})
+app.use('/api/v1/messages', messagesRoutes)
+app.use('/api/v1/rooms', roomsRoutes)
 
 // listen
 app.listen(port, () => console.log(`Listening on localhost:${port}`))
