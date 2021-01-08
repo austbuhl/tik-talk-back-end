@@ -1,7 +1,8 @@
 // imports
 import express from 'express'
 import mongoose from 'mongoose'
-import Messages from './dbMessages.js'
+import Messages from './models/message.js'
+import Rooms from './models/room.js'
 import Pusher from 'pusher'
 import cors from 'cors'
 
@@ -71,12 +72,33 @@ app.get('/api/v1/messages', (req, res) => {
 })
 
 app.post('/api/v1/messages/', (req, res) => {
-  const dbMessage = req.body
-  Messages.create(dbMessage, (err, data) => {
+  const message = req.body
+  Messages.create(message, (err, data) => {
     if (err) {
       res.status(500).send(err)
     } else {
       res.status(201).send(data)
+    }
+  })
+})
+
+app.get('/api/v1/rooms', (req, res) => {
+  Rooms.find((err, data) => {
+    if (err) {
+      res.status(500).send(err)
+    } else {
+      res.status(200).send(data)
+    }
+  })
+})
+
+app.post('/api/v1/rooms', (req, res) => {
+  const room = req.body
+  Rooms.create(room, (err, data) => {
+    if (err) {
+      res.status(500).send(err)
+    } else {
+      res.status(200).send(data)
     }
   })
 })
