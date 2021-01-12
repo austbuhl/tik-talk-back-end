@@ -27,15 +27,13 @@ router.post('/', (req, res) => {
 
 router.get('/:roomId/messages', (req, res) => {
   const roomId = req.params.roomId
-  Messages.find({ roomId: roomId })
-    // .populate('roomId')
-    .then((err, data) => {
-      if (err) {
-        res.status(500).send(err)
-      } else {
-        res.status(200).json(data)
-      }
-    })
+  Messages.find({ roomId: roomId }, (err, data) => {
+    if (err) {
+      res.status(500).send(err)
+    } else {
+      res.status(200).json(data)
+    }
+  })
 })
 
 export default router
