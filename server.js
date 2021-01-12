@@ -43,14 +43,29 @@ db.once('open', () => {
   console.log('DB Connected')
 
   const msgCollection = db.collection('messages')
-  const changeStream = msgCollection.watch()
+  const msgChangeStream = msgCollection.watch()
 
-  changeStream.on('change', (change) => {
+  const roomCollection = db.collection('rooms')
+  const roomChangeStream = roomCollection.watch()
+
+  msgChangeStream.on('change', (change) => {
     console.log(change)
     if (change.operationType === 'insert') {
       const messageDetails = change.fullDocument
       pusher.trigger('messages', 'inserted', {
         ...messageDetails
+      })
+    } else {
+      console.log('error triggering pusher')
+    }
+  })
+
+  roomChangeStream.on('change', (change) => {
+    console.log(change)
+    if (change.operationType === 'insert') {
+      const roomDetails = change.fullDocument
+      pusher.trigger('rooms', 'inserted', {
+        ...roomDetails
       })
     } else {
       console.log('error triggering pusher')
