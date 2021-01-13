@@ -4,15 +4,13 @@ import Messages from '../models/message.js'
 const router = express.Router()
 
 router.get('/', (req, res) => {
-  Messages.find()
-    .populate('roomId')
-    .then((err, data) => {
-      if (err) {
-        res.status(500).send(err)
-      } else {
-        res.status(200).json(data)
-      }
-    })
+  Messages.find((err, data) => {
+    if (err) {
+      res.status(500).send(err)
+    } else {
+      res.status(200).json(data)
+    }
+  })
 })
 
 router.post('/', (req, res) => {
